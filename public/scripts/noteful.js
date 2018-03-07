@@ -11,6 +11,7 @@ const noteful = (function () {
     const editForm = $('.js-note-edit-form');
     editForm.find('.js-note-title-entry').val(store.currentNote.title);
     editForm.find('.js-note-content-entry').val(store.currentNote.content);
+    console.log(store.notes);
   }
 
   /**
@@ -22,6 +23,7 @@ const noteful = (function () {
       <a href="#" class="name js-note-show-link">${item.title}</a>
       <button class="removeBtn js-note-delete-button">X</button>
     </li>`);
+
     return listItems.join('');
   }
 
@@ -79,10 +81,14 @@ const noteful = (function () {
 
       api.update(noteObj.id, noteObj, updateResponse => {
         store.currentNote = updateResponse;
-
-        render();
+        // console.log("lsdkfj")
+        api.search({}, function(response){
+          store.notes = response;
+          render();
+        }
+        );
       });
-      
+
 
     });
   }
@@ -101,7 +107,7 @@ const noteful = (function () {
       event.preventDefault();
 
       console.log('Delete Note, coming soon...');
-      
+
     });
   }
 
