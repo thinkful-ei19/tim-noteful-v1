@@ -93,9 +93,11 @@ router.delete('/api/notes/:id', (req, res, next) => {
       return next(err);
     }
     if (item) {
-      res.status(204);
+      res.sendStatus(204);
     } else {
-      next();
+      const err = new Error('Delete ID not found');
+      err.status = 400;
+      next(err);
     }
   });
 });

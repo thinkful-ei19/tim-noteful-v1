@@ -128,7 +128,7 @@ const noteful = (function () {
   
 
 
-      api.delete(noteId, deleteResponse =>{
+      api.delete(noteId, () =>{
        
         api.search({}, response => {
           store.notes = response;
