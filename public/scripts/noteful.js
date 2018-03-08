@@ -121,24 +121,16 @@ const noteful = (function () {
     $('.js-notes-list').on('click', '.js-note-delete-button', event => {
       event.preventDefault();
     
-      // console.log('Delete Note, coming soon...');
-       
       const noteId = getNoteIdFromElement(event.currentTarget);
       console.log(noteId);
   
-
-
       api.delete(noteId, () =>{
        
         api.search({}, response => {
           store.notes = response;
           render();
-        });
-        
+        });  
       });
-      
-
-
     });
   }
 
