@@ -15,8 +15,9 @@ console.log('hello world!');
 // INSERT EXPRESS APP CODE HERE...
 const app = express();
 app.use(morgan('dev'));
-app.use(express.static('public'));
 app.use(express.json());
+app.use(express.static('public'));
+
 app.use(notesRouter);
 
 
@@ -47,8 +48,8 @@ app.use(notesRouter);
 
 // app.get('/api/notes/:id', (req, res, next) => {
 //   const { id } = req.params;
-  //   let foundNote = data.find(item => item.id === Number(id));
-  //   res.json(foundNote);
+//   let foundNote = data.find(item => item.id === Number(id));
+//   res.json(foundNote);
 
 //   notes.find(id, (err, item) => {
 //     if (err) {

@@ -70,26 +70,40 @@ const noteful = (function () {
   function handleNoteFormSubmit() {
     $('.js-note-edit-form').on('submit', function (event) {
       event.preventDefault();
+  
       const editForm = $(event.currentTarget);
-
+  
       const noteObj = {
+        id: store.currentNote.id,
         title: editForm.find('.js-note-title-entry').val(),
         content: editForm.find('.js-note-content-entry').val()
       };
-
-      noteObj.id = store.currentNote.id;
-
-      api.update(noteObj.id, noteObj, updateResponse => {
-        store.currentNote = updateResponse;
-        // console.log("lsdkfj")
-        api.search({}, function(response){
-          store.notes = response;
-          render();
-        }
-        );
-      });
-
-
+  
+      if (store.currentNote.id) {
+  
+        api.update(store.currentNote.id, noteObj, updateResponse => {
+          store.currentNote = updateResponse;
+  
+          api.search(store.currentSearchTerm, updateResponse => {
+            store.notes = updateResponse;
+            render();
+          });
+  
+        });
+  
+      } else {
+  
+        api.create(noteObj, updateResponse => {
+          store.currentNote = updateResponse;
+  
+          api.search(store.currentSearchTerm, updateResponse => {
+            store.notes = updateResponse;
+            render();
+          });
+  
+        });
+      }
+  
     });
   }
 
@@ -97,7 +111,8 @@ const noteful = (function () {
     $('.js-start-new-note-form').on('submit', event => {
       event.preventDefault();
 
-      console.log('Start New Note, coming soon...');
+      store.currentNote = false;
+      render();
 
     });
   }
@@ -105,8 +120,24 @@ const noteful = (function () {
   function handleNoteDeleteClick() {
     $('.js-notes-list').on('click', '.js-note-delete-button', event => {
       event.preventDefault();
+    
+      // console.log('Delete Note, coming soon...');
+       
+      const noteId = getNoteIdFromElement(event.currentTarget);
+      console.log(noteId);
+  
 
-      console.log('Delete Note, coming soon...');
+
+      api.delete(noteId, deleteResponse =>{
+       
+        api.search({}, response => {
+          store.notes = response;
+          render();
+        });
+        
+      });
+      
+
 
     });
   }

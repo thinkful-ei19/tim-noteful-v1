@@ -8,5 +8,6 @@ $(document).ready(function () {
     store.notes = response;
     noteful.render();
   });
+ 
 
 });
